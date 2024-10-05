@@ -36,3 +36,4 @@ Route::resource('usuarios', UsuarioController::class)->names([
 
 Route::resource('ofertas', OfertaController::class);
 Route::post('ofertas/{id}/postularse', [OfertaController::class, 'postularse'])->name('postularse');
+Route::get('mis-postulaciones', [OfertaController::class, 'misPostulaciones'])->name('mis-postulaciones');

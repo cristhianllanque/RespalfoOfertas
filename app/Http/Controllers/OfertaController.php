@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oferta;
+use App\Models\Postulacion; // Asegúrate de importar el modelo de Postulacion
 use Illuminate\Http\Request;
 
 class OfertaController extends Controller
@@ -91,14 +92,27 @@ class OfertaController extends Controller
     }
 
     /**
-     * Postularse a una oferta (método añadido)
+     * Postularse a una oferta.
      */
     public function postularse($id)
     {
         $oferta = Oferta::findOrFail($id);
 
-        // Aquí puedes añadir la lógica de postulación, por ejemplo, guardar en una tabla pivot.
-        // Por simplicidad, lo dejaremos como un mensaje de éxito.
-     return redirect()->route('ofertas.index')->with('success', 'Te has postulado correctamente a esta oferta.');
+        // Guardar la postulación
+        Postulacion::create([
+            'user_id' => auth()->id(),
+            'oferta_id' => $oferta->id,
+        ]);
+
+        return redirect()->route('ofertas.show', $oferta->id)->with('success', 'Te has postulado correctamente a esta oferta.');
+    }
+
+    /**
+     * Mostrar las postulaciones del usuario.
+     */
+    public function misPostulaciones()
+    {
+        $postulaciones = Postulacion::where('user_id', auth()->id())->with('oferta')->get();
+        return view('ofertas.mis-postulaciones', compact('postulaciones'));
     }
 }
