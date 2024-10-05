@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OfertaController;
 
 // Ruta de la página de inicio (home)
 Route::get('/', function () {
@@ -32,3 +33,6 @@ Route::resource('usuarios', UsuarioController::class)->names([
     'update' => 'usuarios.update',
     'destroy' => 'usuarios.destroy',
 ]);
+
+Route::resource('ofertas', OfertaController::class);
+Route::post('ofertas/{id}/postularse', [OfertaController::class, 'postularse'])->name('postularse');
