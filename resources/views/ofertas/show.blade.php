@@ -1,4 +1,3 @@
-<!-- resources/views/ofertas/show.blade.php -->
 <x-app-layout>
     <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
@@ -8,6 +7,13 @@
             @if (session('success'))
                 <div class="bg-green-500 text-white p-4 rounded mb-4">
                     {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Mensaje de alerta si ya está postulado -->
+            @if (session('alert'))
+                <div class="bg-red-500 text-white p-4 rounded mb-4">
+                    {{ session('alert') }}
                 </div>
             @endif
 

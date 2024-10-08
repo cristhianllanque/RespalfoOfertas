@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oferta;
-use App\Models\Postulacion; // Asegúrate de importar el modelo de Postulacion
+use App\Models\Postulacion; // Importar el modelo de Postulacion
 use Illuminate\Http\Request;
 
 class OfertaController extends Controller
@@ -97,6 +97,17 @@ class OfertaController extends Controller
     public function postularse($id)
     {
         $oferta = Oferta::findOrFail($id);
+
+        // Verificar si el usuario ya se ha postulado a esta oferta
+        $existePostulacion = Postulacion::where('user_id', auth()->id())
+                                    ->where('oferta_id', $oferta->id)
+                                    ->exists();
+
+        if ($existePostulacion) {
+            // Si ya está postulado, redirigir con un mensaje de alerta
+            return redirect()->route('ofertas.show', $oferta->id)
+                             ->with('alert', 'Ya te has postulado a esta oferta.');
+        }
 
         // Guardar la postulación
         Postulacion::create([
